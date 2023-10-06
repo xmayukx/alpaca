@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Kanit } from "next/font/google";
 import { UserButton, auth } from "@clerk/nextjs";
+import Link from "next/link";
+import { EnterIcon } from "@radix-ui/react-icons";
 const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
@@ -23,14 +25,26 @@ export default function Home() {
             </span>
             <UserButton afterSignOutUrl="/" />
           </div>
-          <div className="flex mt-2">
+          <div className="flex mt-2 p-3">
             {isAuth && <Button>Go to Chats</Button>}
           </div>
-          <p className=" max-w-xl mt-1 text-sm text-slate-400/75">
+          <p className=" max-w-xl mt-1 text-sm text-slate-400/75 font-medium">
             Join a vast community of students, researchers, and professionals to
             promptly find answers to questions and gain insights from research
             using AI technology.
           </p>
+          <div className="m-2">
+            {isAuth ? (
+              <h1>File Upload</h1>
+            ) : (
+              <Link href={"/sign-in"}>
+                <Button>
+                  Login to get started
+                  <EnterIcon className="ml-2" />
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </main>
