@@ -4,6 +4,7 @@ import { Kanit } from "next/font/google";
 import { UserButton, auth } from "@clerk/nextjs";
 import Link from "next/link";
 import { EnterIcon } from "@radix-ui/react-icons";
+import FileUpload from "@/components/fileUpload";
 const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
@@ -13,9 +14,7 @@ export default function Home() {
   const isAuth = !!userId;
   return (
     <main className="w-screen min-h-screen bg-black text-white">
-      <div
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
-      >
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
             <span
@@ -35,7 +34,7 @@ export default function Home() {
           </p>
           <div className="m-2">
             {isAuth ? (
-              <h1>File Upload</h1>
+              <FileUpload />
             ) : (
               <Link href={"/sign-in"}>
                 <Button>
