@@ -1,4 +1,5 @@
 "use client";
+import { uploadToS3 } from "@/lib/s3";
 import { Cross2Icon, FileIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { useDropzone } from "react-dropzone";
@@ -8,8 +9,19 @@ const FileUpload = () => {
   const { getInputProps, getRootProps } = useDropzone({
     accept: { "application/pdf": [".pdf"] },
     maxFiles: 1,
-    onDrop: (acceptedFiles) => {
-      console.log(acceptedFiles.forEach((file) => setFileName(file.name)));
+    onDrop: async (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      setFileName(file.name);
+      if (file.size > 10 * 1024 * 1024) {
+        alert("File size is too big, should be less than 10 MB");
+        return;
+      }
+      try {
+        const data = await uploadToS3(file);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
   return (
