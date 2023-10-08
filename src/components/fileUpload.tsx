@@ -35,7 +35,7 @@ const FileUpload = () => {
         <input {...getInputProps()} />
         <FileIcon className="w-10 h-10" />
         <p className="text-xs mt-2 text-slate-100">
-          {fileName ? fileName : "Drop PDF Here"}
+          {fileName ? fileName : "Drop PDF Here. Less than 10 MB"}
         </p>
       </div>
     </div>
