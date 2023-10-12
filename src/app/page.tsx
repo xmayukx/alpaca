@@ -18,16 +18,16 @@ export default function Home() {
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
             <span
-              className={`mr-3 lg:text-6xl md:text-4xl text-2xl font-semibold ${kanit.className}`}
+              className={`mr-3 lg:text-6xl md:text-4xl text-2xl lg:font-semibold font-bold ${kanit.className}`}
             >
               Talk to your PDF
             </span>
             <UserButton afterSignOutUrl="/" />
           </div>
-          <div className="flex mt-2 p-3">
+          <div className="flex mt-2 p-1">
             {isAuth && <Button>Go to Chats</Button>}
           </div>
-          <p className=" max-w-xl mt-1 text-sm text-slate-400/75 font-medium">
+          <p className=" max-w-xl mt-1 text-sm text-slate-400/75 font-medium mb-4">
             Join a vast community of students, researchers, and professionals to
             promptly find answers to questions and gain insights from research
             using AI technology.
