@@ -1,5 +1,4 @@
 import AWS from "aws-sdk";
-
 export async function uploadToS3(file: File) {
   try {
     AWS.config.update({
@@ -33,7 +32,7 @@ export async function uploadToS3(file: File) {
 
     return Promise.resolve({
       fileKey,
-      file_name: file.name,
+      fileName: file.name,
     });
   } catch (e) {
     console.log(e);

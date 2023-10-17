@@ -1,16 +1,18 @@
 "use client";
 import { uploadToS3 } from "@/lib/s3";
 import { Cross2Icon, FileIcon } from "@radix-ui/react-icons";
-import { useState, CSSProperties } from "react";
+import { useState, CSSProperties, useEffect } from "react";
 import { PropagateLoader } from "react-spinners";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 const override: CSSProperties = {
   margin: "0 auto",
   justifyContent: "center",
 };
 const FileUpload = () => {
+  const router = useRouter();
   // let [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   let [color, setColor] = useState("#ffffff");
@@ -31,6 +33,10 @@ const FileUpload = () => {
         }),
       });
       const data = await response.json();
+      if (data === null || data === undefined) {
+        toast.error("Something went wrong");
+        return;
+      }
       return data;
     },
   });
@@ -49,22 +55,24 @@ const FileUpload = () => {
       try {
         setUploading(true);
         const data = await uploadToS3(file);
-        if (!data?.fileKey || !data?.file_name) {
+        if (!data?.fileKey || !data?.fileName) {
           toast.error("Something went wrong");
           return;
         }
+        console.log(data);
         mutate(
           {
             fileKey: data.fileKey,
-            fileName: data.file_name,
+            fileName: data.fileName,
           },
           {
-            onSuccess: (data) => {
+            onSuccess: ({ chat_id }) => {
               // console.log(data);
               toast.success("Chat created!");
+              router.push(`/chat/${chat_id}`);
             },
             onError: (error) => {
-              // console.log(error);
+              console.log(error);
               toast.error("Error creating chat");
             },
           },
@@ -72,11 +80,19 @@ const FileUpload = () => {
         console.log(data);
       } catch (error) {
         console.log(error);
+        toast.error("File was not uploaded. Please try again later.");
       } finally {
         setUploading(false);
       }
     },
   });
+  // const [isMounted, setIsMounted] = useState(false);
+  // useEffect(() => {
+  //   setIsMounted(false);
+  // }, []);
+  // if (!isMounted) {
+  //   return null;
+  // }
   return (
     <div className="bg-gray-700 p-2 rounded-xl w-">
       <div
