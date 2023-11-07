@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "dba18661-4731-4a93-a464-b8e46e379241",
+  "id": "35222143-bfb6-40fc-8f67-f1bb10a68c4a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "chats": {
@@ -112,7 +112,7 @@
       "name": "user_system_enum",
       "values": {
         "system": "system",
-        "admin": "admin"
+        "user": "user"
       }
     }
   },

@@ -33,13 +33,19 @@ export async function downloadFromS3(fileKey: string) {
     }
     // console.log(obj.Body);
     const tempDirectory = "temp";
-    if (!fs.existsSync(tempDirectory)) {
-      fs.mkdirSync(tempDirectory);
-    }
-    const fileName = `${tempDirectory}/alpaca-${Date.now().toString()}.pdf`;
-    fs.writeFileSync(fileName, obj.Body as Buffer);
+    var fileName = ``;
+    try {
+      if (!fs.existsSync(tempDirectory)) {
+        fs.mkdirSync(tempDirectory);
+      }
 
-    console.log("successfully downloaded from s3 to file system");
+      fileName = `${tempDirectory}/alpaca-${Date.now().toString()}.pdf`;
+      fs.writeFileSync(fileName, obj.Body as Buffer);
+      console.log("successfully downloaded from s3 to file system");
+    } catch (e) {
+      console.log(e);
+    }
+
     return fileName;
   } catch (error: any) {
     console.error("Error in downloadFromS3:", error);

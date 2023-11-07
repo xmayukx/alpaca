@@ -1,25 +1,21 @@
-import { Pinecone, PineconeRecord } from "@pinecone-database/pinecone";
+import { MilvusClient } from "@zilliz/milvus2-sdk-node";
 import { downloadFromS3 } from "./s3-server";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { Pinecone, PineconeRecord } from "@pinecone-database/pinecone";
 import {
   Document,
   RecursiveCharacterTextSplitter,
 } from "@pinecone-database/doc-splitter";
-
-import md5 from "md5";
 import { convertToASCII } from "./utils";
 import { getEmbedding } from "./embeddings";
-let pinecone: Pinecone | null = null;
+import md5 from "md5";
 
-export const getPinecone = async () => {
-  if (!pinecone) {
-    pinecone = new Pinecone({
-      apiKey: process.env.PINECONE_API_KEY!,
-      environment: process.env.PINECONE_ENVIRONMENT!,
-    });
-  }
+export const getZilliz = async () => {
+  const address = process.env.ZILLIZ_API_URL!;
+  const token = process.env.ZILLIZ_API_KEY;
 
-  return pinecone;
+  const client = new MilvusClient({ address, token });
+  return client;
 };
 
 type PDFpage = {
@@ -31,7 +27,7 @@ type PDFpage = {
   pageContent: string;
 };
 
-export async function loadS3IntoPinecone(fileKey: string) {
+export async function loadS3IntoZilliz(fileKey: string) {
   console.log("Loading S3 into file system");
   if (!fileKey) {
     throw new Error("fileKey is not defined");
@@ -46,36 +42,37 @@ export async function loadS3IntoPinecone(fileKey: string) {
   console.log("Loaded PDF");
   const docs = await Promise.all(pages.map(prepareDoc));
   console.log("Loaded docs", docs);
-  const namespace = convertToASCII(fileKey);
-  const vectors = await Promise.all(
-    docs.flat().map((doc) => embedDoc(doc, namespace)),
-  );
+  const vectors = await Promise.all(docs.flat().map(embedDoc));
   console.log("Loaded vectors", vectors);
-  const client = await getPinecone();
-  const pineconeIndex = client.index("alpaca");
-
-  console.log("Uploading to Pinecone...");
-
-  await pineconeIndex.upsert(vectors).catch((e) => {
-    console.error(e);
+  const namespace = convertToASCII(fileKey);
+  const client = await getZilliz();
+  console.log("Uploading to Zilliz...");
+  const isUploaded = await client.insert({
+    collection_name: namespace,
+    data: vectors,
   });
-  console.log("Uploaded to Pinecone");
-  return docs[0];
+  if (isUploaded.status.error_code === "Success") {
+    console.log("Uploaded to Zilliz");
+    return docs[0];
+  } else {
+    console.log("Failed to upload to Zilliz");
+    return null;
+  }
 }
 
-async function embedDoc(doc: Document, namespace: string) {
+async function embedDoc(doc: Document) {
   try {
     const embedding = await getEmbedding(doc.pageContent);
     const hash = md5(doc.pageContent);
+
     return {
       id: hash,
       values: embedding,
       metadata: {
         text: doc.metadata.text,
         pageNumber: doc.metadata.pageNumber,
-        __filename: namespace,
       },
-    } as PineconeRecord;
+    };
   } catch (error) {
     console.error(error);
     throw new Error("Could not embed doc ");
@@ -92,13 +89,13 @@ async function prepareDoc(page: PDFpage) {
   pageContent = pageContent.replace(/\n/g, "");
   const splitter = new RecursiveCharacterTextSplitter();
   const docs = await splitter.splitDocuments([
-    new Document({
+    {
       pageContent,
       metadata: {
         pageNumber: metadata.loc.pageNumber,
         text: truncateStringByBytes(pageContent, 36000),
       },
-    }),
+    },
   ]);
   return docs;
 }

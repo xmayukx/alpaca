@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { loadS3IntoPinecone } from "@/lib/pinecone";
 import { getS3Url } from "@/lib/s3";
+import { loadS3IntoZilliz } from "@/lib/zilliz";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -14,9 +15,13 @@ export async function POST(req: Request, res: Response) {
     const body = await req.json();
     const { fileKey, fileName } = body;
     console.log(fileKey, fileName);
-    await loadS3IntoPinecone(fileKey).then((doc) => {
-      console.log(doc);
-    });
+    await loadS3IntoPinecone(fileKey)
+      .then((doc) => {
+        console.log(doc);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     const chat_id = await db
       .insert(chats)
       .values({
@@ -28,6 +33,7 @@ export async function POST(req: Request, res: Response) {
       .returning({
         insertedId: chats.id,
       });
+
     console.log(chat_id);
     return NextResponse.json(
       { chat_id: chat_id[0].insertedId },

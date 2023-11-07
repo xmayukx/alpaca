@@ -9,8 +9,8 @@ const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
-export default function Home() {
-  const { userId } = auth();
+export default async function Home() {
+  const { userId } = await auth();
   const isAuth = !!userId;
   return (
     <main className="w-screen min-h-screen bg-black text-white">
@@ -25,7 +25,11 @@ export default function Home() {
             <UserButton afterSignOutUrl="/" />
           </div>
           <div className="flex mt-2 p-1">
-            {isAuth && <Button>Go to Chats</Button>}
+            {isAuth && (
+              <Link href={"/chat"}>
+                <Button>Go to Chats</Button>
+              </Link>
+            )}
           </div>
           <p className=" max-w-xl mt-1 text-sm text-slate-400/75 font-medium mb-4">
             Join a vast community of students, researchers, and professionals to

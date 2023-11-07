@@ -1,5 +1,5 @@
 DO $$ BEGIN
- CREATE TYPE "user_system_enum" AS ENUM('system', 'admin');
+ CREATE TYPE "user_system_enum" AS ENUM('system', 'user');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
