@@ -1,11 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Kanit, Exo_2 } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import Providers from "@/context/Providers";
 import { Toaster } from "sonner";
-const inter = Inter({ subsets: ["latin"] });
+const kanit = Exo_2({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "alpaca",
@@ -25,7 +28,7 @@ export default function RootLayout({
     >
       <Providers>
         <html lang="en">
-          <body className={` bg-black ${inter.className}`}>
+          <body className={` bg-black text-white ${kanit.className}`}>
             <Toaster richColors />
             {children}
           </body>

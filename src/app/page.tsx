@@ -3,15 +3,30 @@ import { Button } from "@/components/ui/button";
 import { Kanit } from "next/font/google";
 import { UserButton, auth } from "@clerk/nextjs";
 import Link from "next/link";
-import { EnterIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, EnterIcon } from "@radix-ui/react-icons";
 import FileUpload from "@/components/fileUpload";
+import { useEffect } from "react";
+import { checkSubscription } from "@/lib/subscription";
+import SubscriptionButton from "@/components/SubscriptionButton";
+import { db } from "@/lib/db";
+import { chats } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 const kanit = Kanit({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 export default async function Home() {
-  const { userId } = await auth();
+  const { userId }: { userId: string | null } = auth();
   const isAuth = !!userId;
+  let firstChat;
+  if (userId) {
+    firstChat = await db.select().from(chats).where(eq(chats.userId, userId));
+    if (firstChat) {
+      firstChat = firstChat[0];
+    }
+  }
+
+  const isPro = await checkSubscription();
   return (
     <main className="w-screen min-h-screen bg-black text-white">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -25,11 +40,16 @@ export default async function Home() {
             <UserButton afterSignOutUrl="/" />
           </div>
           <div className="flex mt-2 p-1">
-            {isAuth && (
-              <Link href={"/chat"}>
-                <Button>Go to Chats</Button>
+            {isAuth && firstChat && (
+              <Link href={`/chat/${firstChat.id}`}>
+                <Button>
+                  Go to Chats <ArrowRightIcon className=" ml-2" />{" "}
+                </Button>
               </Link>
             )}
+            <div className=" ml-3">
+              <SubscriptionButton isPro={isPro} />
+            </div>
           </div>
           <p className=" max-w-xl mt-1 text-sm text-slate-400/75 font-medium mb-4">
             Join a vast community of students, researchers, and professionals to
