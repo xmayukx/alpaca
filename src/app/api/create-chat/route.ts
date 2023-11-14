@@ -2,7 +2,6 @@ import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { loadS3IntoPinecone } from "@/lib/pinecone";
 import { getS3Url } from "@/lib/s3";
-import { loadS3IntoZilliz } from "@/lib/zilliz";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
