@@ -22,8 +22,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 
 
@@ -138,16 +137,42 @@ _Below is an example of how you can instruct your audience on installing and set
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/your_username/Project-Name.git
    ```
 3. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+4. Enter your API in `.env.local`
+ ```js
+ NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+ CLERK_SECRET_KEY=
+ NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+ NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+
+ #NEONdb
+ DATABASE_URL=
+
+ #AWS-S3
+ NEXT_PUBLIC_S3_ACCESS_KEY_ID=
+ NEXT_PUBLIC_S3_SECRET_KEY=
+ NEXT_PUBLIC_S3_BUCKET_NAME=
+
+ #Pinecone ENV
+ PINECONE_ENVIRONMENT=
+ PINECONE_API_KEY=
+
+ #OPENAI
+ OPENAI_API_KEY=
+
+ #STRIPE
+ STRIPE_API_KEY=
+
+ NEXT_PUBLIC_BASE_URL=http://localhost:3000
+ STRIPE_WEBHOOK_SECRET=
+ ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -240,15 +265,15 @@ Use this space to list resources you find helpful and would like to give credit 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/xmayukx/alpaca/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+[forks-url]: https://github.com/xmayukx/alpaca/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[stars-url]: https://github.com/xmayukx/alpaca/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[issues-url]: https://github.com/xmayukx/alpaca/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/xmayukx/alpaca/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
