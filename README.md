@@ -175,8 +175,11 @@ This is an example of how to list things you need to use the software and how to
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+Demo video of how Alpaca works:
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+https://github.com/xmayukx/alpaca/assets/89103181/94985d89-275c-4069-8a2d-6ddd826ed577
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
