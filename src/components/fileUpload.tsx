@@ -119,7 +119,9 @@ const FileUpload = () => {
           <>
             <FileIcon className="w-10 h-10" />
             <p className="text-xs mt-2 text-slate-100">
-              {fileName ? fileName : "Drop PDF Here. Less than 10 MB"}
+              {fileName
+                ? fileName
+                : "Drop PDF Here. PDF should contain 1 page only."}
             </p>
           </>
         )}
