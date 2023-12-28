@@ -8,6 +8,7 @@ import MessageList from "./MessageList";
 import { useQuery } from "@tanstack/react-query";
 import { Message } from "ai";
 import axios from "axios";
+import { Card } from "./ui/card";
 type ChatProps = {
   chatId: number;
 };
